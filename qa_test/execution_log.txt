@@ -1,0 +1,29 @@
+[DevFlow] Running on port 8086
+--- DevFlow Community Core Manual QA Live Test ---
+Test 1 Healthcheck:
+ HTTP/1.1 200 OK
+{"status":"UP","service":"devflow-community-core"}
+
+Test 2 Publish Engineering Post:
+ HTTP/1.1 201 Created
+{"id":"post_f0d0da58","authorId":"usr_dev_101","title":"Scaling Distributed Key-Value Store with Raft","contentMarkdown":"In this deep dive, we explore raft consensus and log compaction...","tags":["distributed-systems","raft","golang"],"upvotes":1,"reactions":{},"createdAt":"2026-11-25T13:10:06.426Z"}
+
+Test 3 Spam Rejection (422):
+ HTTP/1.1 422 Unprocessable Entity
+{"error":"Content contains prohibited keyword: free_tokens"}
+
+Test 4 Upvote Post:
+ HTTP/1.1 200 OK
+{"id":"post_f0d0da58","upvotes":2}
+
+Test 5 Publish 2nd Post within 60s:
+ HTTP/1.1 201 Created
+{"id":"post_76b75d3c","authorId":"usr_dev_101","title":"Optimizing Postgres Index Performance","contentMarkdown":"Covering indexes and partial indexing tips...","tags":["postgres","database"],"upvotes":1,"reactions":{},"createdAt":"2026-11-25T13:10:06.478Z"}
+
+Test 6 Rate Limit Block (429):
+ HTTP/1.1 429 Too Many Requests
+{"error":"Rate limit exceeded: max 2 posts per minute"}
+
+Test 7 Ranked Feed Algorithm Output:
+ HTTP/1.1 200 OK
+[{"id":"post_f0d0da58","authorId":"usr_dev_101","title":"Scaling Distributed Key-Value Store with Raft","contentMarkdown":"In this deep dive, we explore raft consensus and log compaction...","tags":["distributed-systems","raft","golang"],"upvotes":2,"reactions":{},"createdAt":"2026-11-25T13:10:06.426Z","rankingScore":0.2872},{"id":"post_76b75d3c","authorId":"usr_dev_101","title":"Optimizing Postgres Index Performance","contentMarkdown":"Covering indexes and partial indexing tips...","tags":["postgres","database"],"upvotes":1,"reactions":{},"createdAt":"2026-11-25T13:10:06.478Z","rankingScore":0}]
